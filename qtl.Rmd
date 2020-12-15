@@ -1,0 +1,301 @@
+---
+title: "Capstone qtl"
+author: "Shijie He"
+date: "12/1/2020"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+# Data Import
+
+```{r}
+library(qtl)
+geno <- read.csv("~/Desktop/capstone/qtl/RBF2_geno_and_pheno.csv")
+RB <- read.cross("csv", "~/Desktop/capstone/qtl", "RBF2_geno_and_pheno.csv", genotypes = c("CC", "CV", "VV"))
+attributes(RB$geno)[[1]] = seq(1, 21, 1)
+
+RB_widx <- read.cross("csv", "~/Desktop/capstone/qtl", "RBF2_geno_and_pheno_widx.csv", genotypes = c("CC", "CV", "VV"))
+```
+
+```{r}
+load("probAA.Aa.aa.RData")
+
+pAa = pAa[1:100,]
+paa = paa[1:100,]
+pAA = pAA[1:100,]
+
+add_prob<-function(RB){
+        chroms<-names(RB$geno)
+        ids<-as.character(RB$pheno$id)
+        step <- 0 ; off.end <- 0 ; stepwidth <- "fixed"; error.prob<-1e-04
+
+        RB_prob <- calc.genoprob(RB)
+        for(chr in chroms){
+            RB_prob$geno[[chr]]$prob[,,1]<-as.matrix(pAA[match(ids, pAA$id),colnames(RB_prob$geno[[chr]]$prob[,,1])])
+            RB_prob$geno[[chr]]$prob[,,2]<-as.matrix(pAa[match(ids, pAa$id),colnames(RB_prob$geno[[chr]]$prob[,,2])])
+            RB_prob$geno[[chr]]$prob[,,3]<-as.matrix(paa[match(ids, paa$id),colnames(RB_prob$geno[[chr]]$prob[,,3])])
+
+            attr(RB_prob$geno[[chr]]$prob, "error.prob") <- error.prob #fixed this prob slot in v. 1.5, now can run scantwo
+            attr(RB_prob$geno[[chr]]$prob, "step") <- step
+            attr(RB_prob$geno[[chr]]$prob, "off.end") <- off.end
+            attr(RB_prob$geno[[chr]]$prob, "map.function") <- "haldane" 
+            attr(RB_prob$geno[[chr]]$prob, "stepwidth") <- stepwidth
+        }
+    return(RB_prob)
+    }
+
+add_prob(RB_widx)
+```
+
+# qtl and plots
+
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+out = list()
+
+for (i in 1:54) {
+  out.hk = scanone(RB, method="hk", pheno.col = i)
+  out[[colnames(RB$pheno[i])]] = out.hk
+}
+```
+
+```{r echo=FALSE, fig.height=30, fig.width=25}
+par(mfrow=c(5,2), cex = 1.7)
+
+for (i in 1:10){
+  plot(out[[i]])
+  title(attributes(out)[[1]][i])
+}
+```
+
+```{r echo=FALSE, fig.height=30, fig.width=25}
+par(mfrow=c(5,2), cex = 1.7)
+
+for (i in 11:20){
+  plot(out[[i]])
+  title(attributes(out)[[1]][i])
+}
+```
+
+```{r echo=FALSE, fig.height=30, fig.width=25}
+par(mfrow=c(5,2), cex = 1.7)
+
+for (i in 21:30){
+  plot(out[[i]])
+  title(attributes(out)[[1]][i])
+}
+```
+
+```{r echo=FALSE, fig.height=30, fig.width=25}
+par(mfrow=c(5,2), cex = 1.7)
+
+for (i in 31:40){
+  plot(out[[i]])
+  title(attributes(out)[[1]][i])
+}
+```
+
+```{r echo=FALSE, fig.height=30, fig.width=25}
+par(mfrow=c(5,2), cex = 1.5)
+
+for (i in 41:50){
+  plot(out[[i]])
+  title(attributes(out)[[1]][i])
+}
+```
+
+```{r echo=FALSE, fig.height=12, fig.width=25}
+par(mfrow=c(2,2), cex = 1.7)
+
+for (i in 51:54){
+  plot(out[[i]])
+  title(attributes(out)[[1]][i])
+}
+```
+
+# Size comparison
+
+```{r echo=FALSE, fig.height=10, fig.width=12, message=FALSE, warning=FALSE}
+par(mfrow=c(2,1))
+
+plot(out[[1]], out[[10]], out[[19]], col=c("light blue", 'light green', 'orange'), lwd = 2.5);
+legend(4000,5,c("dorsal","pelvic", "anal"), lwd=c(2,2), col=c("light blue","light green", "orange"));
+title('size');
+
+plot(out[[28]], out[[37]], out[[46]], col=c("pink", 'blue', 'red'), lwd = 2.5);
+legend(4000,4.2,c("body","tail", "head"), lwd=c(2,2), col=c("pink", 'blue', 'red'));
+```
+
+# Whole saturation level
+
+```{r echo=FALSE, fig.height=10, fig.width=12, message=FALSE, warning=FALSE}
+par(mfrow=c(2,1))
+
+plot(out[[2]], out[[11]], out[[20]], col=c("light blue", 'light green', 'orange'), lwd = 2.5);
+legend(4000,4.2,c("dorsal","pelvic", "anal"), lwd=c(2,2), col=c("light blue","light green", "orange"));
+title('Whole Saturation level');
+
+plot(out[[29]], out[[38]], out[[47]], col=c("pink", 'blue', 'red'), lwd = 2.5);
+legend(4000,3.7,c("body","tail", "head"), lwd=c(2,2), col=c("pink", 'blue', 'red'));
+```
+
+# Red Percentage
+
+```{r echo=FALSE, fig.height=4, fig.width=5, message=FALSE, warning=FALSE}
+par(mfrow=c(2,1))
+
+plot(out[[3]], out[[12]], out[[21]], col=c("light blue", 'light green', 'orange'), lwd = 2.5);
+legend(4000,10,c("dorsal","pelvic", "anal"), lwd=c(2,2), col=c("light blue","light green", "orange"));
+title('Red Percentage');
+
+plot(out[[30]], out[[39]], out[[48]], col=c("pink", 'blue', 'red'), lwd = 2.5);
+legend(4000,11,c("body","tail", "head"), lwd=c(2,2), col=c("pink", 'blue', 'red'))
+```
+
+# Red Saturation Level
+
+```{r echo=FALSE, fig.height=10, fig.width=12, message=FALSE, warning=FALSE}
+par(mfrow=c(2,1))
+
+plot(out[[4]], out[[13]], out[[22]], col=c("light blue", 'light green', 'orange'), lwd = 2.5);
+legend(4000,7,c("dorsal","pelvic", "anal"), lwd=c(2,2), col=c("light blue","light green", "orange"));
+title('Red Saturation level');
+
+plot(out[[31]], out[[40]], out[[49]], col=c("pink", 'blue', 'red'), lwd = 2.5);
+legend(4000,4.1,c("body","tail", "head"), lwd=c(2,2), col=c("pink", 'blue', 'red'))
+```
+
+
+# Blue Percentage
+
+```{r echo=FALSE, fig.height=10, fig.width=12, message=FALSE, warning=FALSE}
+par(mfrow=c(2,1))
+
+plot(out[[5]], out[[14]], out[[23]], col=c("light blue", 'light green', 'orange'), lwd = 2.5);
+legend(4200,5.8,c("dorsal","pelvic", "anal"), lwd=c(2,2), col=c("light blue","light green", "orange"));
+title('Blue Percentage');
+
+plot(out[[32]], out[[41]], out[[50]], col=c("pink", 'blue', 'red'), lwd = 2.5);
+legend(4200,14,c("body","tail", "head"), lwd=c(2,2), col=c("pink", 'blue', 'red'))
+```
+
+# Blue Saturation Level
+
+```{r echo=FALSE, fig.height=10, fig.width=12, message=FALSE, warning=FALSE}
+par(mfrow=c(2,1))
+
+plot(out[[6]], out[[15]], out[[24]], col=c("light blue", 'light green', 'orange'), lwd = 2.5);
+legend(4200,4.5,c("dorsal","pelvic", "anal"), lwd=c(2,2), col=c("light blue","light green", "orange"));
+title('Blue Saturation level');
+
+plot(out[[33]], out[[42]], out[[51]], col=c("pink", 'blue', 'red'), lwd = 2.5);
+legend(4200,5,c("body","tail", "head"), lwd=c(2,2), col=c("pink", 'blue', 'red'))
+```
+
+# Purple Percentage
+
+```{r echo=FALSE, fig.height=10, fig.width=12, message=FALSE, warning=FALSE}
+par(mfrow=c(2,1))
+
+plot(out[[7]], out[[16]], out[[25]], col=c("light blue", 'light green', 'orange'), lwd = 2.5);
+legend(4200,6.9,c("dorsal","pelvic", "anal"), lwd=c(2,2), col=c("light blue","light green", "orange"));
+title('Purple Percentage');
+
+plot(out[[34]], out[[43]], out[[52]], col=c("pink", 'blue', 'red'), lwd = 2.5);
+legend(4200,8.2,c("body","tail", "head"), lwd=c(2,2), col=c("pink", 'blue', 'red'))
+```
+
+# Orange Percentage
+
+```{r echo=FALSE, fig.height=10, fig.width=12, message=FALSE, warning=FALSE}
+par(mfrow=c(2,1))
+
+plot(out[[8]], out[[17]], out[[26]], col=c("light blue", 'light green', 'orange'), lwd = 2.5);
+legend(4200,5.4,c("dorsal","pelvic", "anal"), lwd=c(2,2), col=c("light blue","light green", "orange"));
+title('Orange Percentage');
+
+plot(out[[35]], out[[44]], out[[53]], col=c("pink", 'blue', 'red'), lwd = 2.5);
+legend(4200,9.5,c("body","tail", "head"), lwd=c(2,2), col=c("pink", 'blue', 'red'))
+```
+
+# Dark Percentage
+
+```{r echo=FALSE, fig.height=10, fig.width=12, message=FALSE, warning=FALSE}
+par(mfrow=c(2,1))
+
+plot(out[[9]], out[[18]], out[[27]], col=c("light blue", 'light green', 'orange'), lwd = 2.5);
+legend(4200,5.5,c("dorsal","pelvic", "anal"), lwd=c(2,2), col=c("light blue","light green", "orange"));
+title('Dark Percentage');
+
+plot(out[[36]], out[[45]], out[[54]], col=c("pink", 'blue', 'red'), lwd = 2.5);
+legend(4200,6.5,c("body","tail", "head"), lwd=c(2,2), col=c("pink", 'blue', 'red'))
+```
+
+# PlotPXG
+
+```{r echo=FALSE, fig.height=35, fig.width=25, warning=FALSE}
+par(mfrow = c(5,2), cex = 2)
+
+for (i in 1:10) {
+  m <- max(out[[i]])
+  mar <- find.marker(RB, chr=m[[1]], pos=m[[2]])
+  chro <- as.numeric(substr(mar, 7, 9))-880
+  plotPXG(RB, marker=mar, main = as.character(chro), ylab = attributes(out)[[1]][[i]])
+}
+```
+
+```{r echo=FALSE, fig.height=35, fig.width=25, warning=FALSE}
+par(mfrow = c(5,2), cex = 2)
+
+for (i in 11:20) {
+  m <- max(out[[i]])
+  mar <- find.marker(RB, chr=m[[1]], pos=m[[2]])
+  chro <- as.numeric(substr(mar, 7, 9))-880
+  plotPXG(RB, marker=mar, main = as.character(chro), ylab = attributes(out)[[1]][[i]])
+}
+```
+
+```{r echo=FALSE, fig.height=35, fig.width=25, warning=FALSE}
+par(mfrow = c(5,2), cex = 2)
+
+for (i in 21:30) {
+  m <- max(out[[i]])
+  mar <- find.marker(RB, chr=m[[1]], pos=m[[2]])
+  chro <- as.numeric(substr(mar, 7, 9))-880
+  plotPXG(RB, marker=mar, main = as.character(chro), ylab = attributes(out)[[1]][[i]])
+}
+```
+
+```{r echo=FALSE, fig.height=35, fig.width=25, warning=FALSE}
+par(mfrow = c(5,2), cex = 2)
+
+for (i in 31:40) {
+  m <- max(out[[i]])
+  mar <- find.marker(RB, chr=m[[1]], pos=m[[2]])
+  chro <- as.numeric(substr(mar, 7, 9))-880
+  plotPXG(RB, marker=mar, main = as.character(chro), ylab = attributes(out)[[1]][[i]])
+}
+```
+
+```{r echo=FALSE, fig.height=35, fig.width=25, warning=FALSE}
+par(mfrow = c(5,2), cex = 2)
+
+for (i in 41:50) {
+  m <- max(out[[i]])
+  mar <- find.marker(RB, chr=m[[1]], pos=m[[2]])
+  chro <- as.numeric(substr(mar, 7, 9))-880
+  plotPXG(RB, marker=mar, main = as.character(chro), ylab = attributes(out)[[1]][[i]])
+}
+```
+
+```{r echo=FALSE, fig.height=14, fig.width=25, warning=FALSE}
+par(mfrow = c(2,2), cex = 2)
+
+for (i in 51:54) {
+  m <- max(out[[i]])
+  mar <- find.marker(RB, chr=m[[1]], pos=m[[2]])
+  chro <- as.numeric(substr(mar, 7, 9))-880
+  plotPXG(RB, marker=mar, main = as.character(chro), ylab = attributes(out)[[1]][[i]])
+}
+```
+
