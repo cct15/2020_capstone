@@ -12,3 +12,10 @@ Betta fish is considered as a great candidate species for the domestic animal mo
 ## Concept Slide
 ![image](https://github.com/cct15/2020_capstone/blob/main/concept.png)
 
+## Color Calibration
+
+## Fish Segmentation
+
+## Feature Extaction
+
+## QTL Mapping
