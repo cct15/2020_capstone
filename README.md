@@ -14,9 +14,9 @@ Betta fish is considered as a great candidate species for the domestic animal mo
 
 ## Color Calibration
 The color calibration has 4 parts: 1. Extract the color cards 2. Detect the color patches in the cards 3. Match the color patches to the standard color 4. Calibrate the color with machine learning methods (PLS).
-The code for the first part could be found: https://github.com/cct15/2020_capstone/blob/main/color_calibration/color_checker.py
-The code for the third part could be found: https://github.com/cct15/2020_capstone/blob/main/color_calibration/color_calibration.py
-The code for the second and fourth part could be found: https://github.com/cct15/2020_capstone/blob/main/color_calibration/calibration_result.ipynb
+The code for the first part could be found: https://github.com/cct15/2020_capstone/blob/main/color_calibration/color_checker.py \n
+The code for the third part could be found: https://github.com/cct15/2020_capstone/blob/main/color_calibration/color_calibration.py \n
+The code for the second and fourth part could be found: https://github.com/cct15/2020_capstone/blob/main/color_calibration/calibration_result.ipynb \n
 The image_fetch script helped to get the fish data from google drive while the env script stored some variables for the calibration work.
 
 ## Fish Segmentation
