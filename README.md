@@ -22,7 +22,7 @@ To separate different parts of the fish, feature extraction needs to be done to 
 [Feature Extraction](https://github.com/cct15/2020_capstone/blob/main/Feature_Extraction.ipynb)
 
 ## Genetic Mapping
-Quantitative trait locus (QTL) mapping is used in this section. QTL is a locus (section of DNA) that correlates with variation of a quantitative trait in the phenotype of a population of organisms.[7] QTLs are mapped by identifying which molecular markers correlate with an observed trait. In this part, we will use both the data of phenotype, which is the feature matrix we have from previous work, and the genotype, which are given. 
+Quantitative trait locus (QTL) mapping is used in this section. QTL is a locus (section of DNA) that correlates with variation of a quantitative trait in the phenotype of a population of organisms. QTLs are mapped by identifying which molecular markers correlate with an observed trait. In this part, we will use both the data of phenotype, which is the feature matrix we have from previous work, and the genotype, which are given. 
 
 [Genetic Mapping](https://github.com/cct15/2020_capstone/blob/main/qtl.Rmd)
 
