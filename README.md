@@ -18,7 +18,9 @@ Betta fish is considered as a great candidate species for the domestic animal mo
 The fish segmentation has two parts, whole fish cropping and fish anatomy. The whole fish cropping is to crop the fish from the images. Then we train a model with the idea of transfer learning to identify different parts of the body. 
 
 [Whole_Fish_Cropping](https://github.com/cct15/2020_capstone/blob/main/fish_segmentation/whole_fish_cropping.ipynb)
-The fish anatomy model is trained inspired by: https://github.com/WillBrennan/SemanticSegmentation
+
+The fish anatomy model is trained on FloydHub, inspired by: https://github.com/WillBrennan/SemanticSegmentation
+
 ## Feature Extaction
 To separate different parts of the fish, feature extraction needs to be done to get the final data frame that is going to be used for the genetic mapping in the next step. Size and color distribution of the parts are two main features we need to extract from the fish pictures. 
 
