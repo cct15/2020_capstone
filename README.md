@@ -28,6 +28,9 @@ Quantitative trait locus (QTL) mapping is used in this section. QTL is a locus (
 
 ## Conclusion and Future Work
 In conclusion, to locate genomic regions affecting the size and color of the fish, first we develop models to read, calibrate, segment, analyze the fish images automatically. Then based on the features extracted from images and the genetic data, we run the genetic mapping between genotypes and phenotypes. From the results of genetic mapping, we could find which marker the features depend on. We could also find what type a gene is (dominant, semi-dominant or recessive).
+
 The results are great overall. However, there are still some problems and need to be solved in future work.
+
 The first problem is the poor performance of anatomy on fish with huge fins and tails. As figure 5.1 shows, the neural network can’t properly segment this kind of fish. Huge fins and tails are much more difficult to detect as they’re often overlapped. We can fine tune the neural network and expand the training set with this kind of fish to improve the performance.
+
 The second problem is that it’s hard to detect some parts of the fish based on the side view. From the figure 5.2, we can see that the pectoral fin can’t be segmented from the side view. What’s more, overlap and curling of fins and tails lead to inaccurate features, especially the size. To solve these two problems, we could analyze the images from different angles (side view and top view) together.
