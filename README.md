@@ -19,12 +19,12 @@ Betta fish is considered as a great candidate species for the domestic animal mo
 ## Feature Extaction
 To separate different parts of the fish, feature extraction needs to be done to get the final data frame that is going to be used for the genetic mapping in the next step. Size and color distribution of the parts are two main features we need to extract from the fish pictures. 
 
-[Feature Extraction](https://github.com/cct15/2020_capstone/blob/main/Feature_Extraction.ipynb)
+[Feature Extraction](https://github.com/cct15/2020_capstone/tree/main/feature_extraction)
 
 ## Genetic Mapping
 Quantitative trait locus (QTL) mapping is used in this section. QTL is a locus (section of DNA) that correlates with variation of a quantitative trait in the phenotype of a population of organisms. QTLs are mapped by identifying which molecular markers correlate with an observed trait. In this part, we will use both the data of phenotype, which is the feature matrix we have from previous work, and the genotype, which are given. 
 
-[Genetic Mapping](https://github.com/cct15/2020_capstone/blob/main/qtl.Rmd)
+[Genetic Mapping](https://github.com/cct15/2020_capstone/blob/main/genetic_mapping/qtl.Rmd)
 
 ## Conclusion and Future Work
 In conclusion, to locate genomic regions affecting the size and color of the fish, first we develop models to read, calibrate, segment, analyze the fish images automatically. Then based on the features extracted from images and the genetic data, we run the genetic mapping between genotypes and phenotypes. From the results of genetic mapping, we could find which marker the features depend on. We could also find what type a gene is (dominant, semi-dominant or recessive).
